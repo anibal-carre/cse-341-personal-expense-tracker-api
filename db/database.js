@@ -8,7 +8,7 @@ async function connectDatabase() {
     try {
         await client.connect();
 
-        database = client.db('contacts');
+        database = client.db('expenseTrackerDB');
 
         console.log('Connected to MongoDB');
 

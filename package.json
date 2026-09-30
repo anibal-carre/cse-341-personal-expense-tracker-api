@@ -1,9 +1,9 @@
 {
   "name": "personal-expense-tracker-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "CSE 341 W03 Expense Tracker API",
   "license": "ISC",
-  "author": "",
+  "author": "Anibal David Carreño Alvarez",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {

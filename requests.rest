@@ -1,0 +1,154 @@
+@baseUrl = http://localhost:3000
+
+##################################################
+# ROOT
+##################################################
+
+### API Root
+GET {{baseUrl}}/
+
+
+##################################################
+# EXPENSES
+##################################################
+
+### Get all expenses
+GET {{baseUrl}}/expenses
+
+
+### Get expense by ID
+# Replace EXPENSE_ID with a real MongoDB ID
+GET {{baseUrl}}/expenses/EXPENSE_ID
+
+
+### Create expense
+POST {{baseUrl}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Supermarket",
+  "amount": 125.50,
+  "category": "Food",
+  "date": "2026-09-25",
+  "paymentMethod": "Credit Card",
+  "isRecurring": false,
+  "notes": "Weekly groceries"
+}
+
+
+### Create another expense
+POST {{baseUrl}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Netflix",
+  "amount": 15.99,
+  "category": "Entertainment",
+  "date": "2026-09-20",
+  "paymentMethod": "Debit Card",
+  "isRecurring": true,
+  "notes": "Monthly subscription"
+}
+
+
+### Test expense validation
+POST {{baseUrl}}/expenses
+Content-Type: application/json
+
+{
+  "description": "",
+  "amount": -50,
+  "category": "",
+  "date": "invalid-date",
+  "paymentMethod": "",
+  "isRecurring": "yes",
+  "notes": 123
+}
+
+
+### Update expense
+# Replace EXPENSE_ID with a real MongoDB ID
+PUT {{baseUrl}}/expenses/EXPENSE_ID
+Content-Type: application/json
+
+{
+  "description": "Supermarket Updated",
+  "amount": 150.75,
+  "category": "Food",
+  "date": "2026-09-25",
+  "paymentMethod": "Credit Card",
+  "isRecurring": false,
+  "notes": "Updated grocery expense"
+}
+
+
+### Delete expense
+# Replace EXPENSE_ID with a real MongoDB ID
+DELETE {{baseUrl}}/expenses/EXPENSE_ID
+
+
+### Confirm expense was deleted
+GET {{baseUrl}}/expenses/EXPENSE_ID
+
+
+##################################################
+# CATEGORIES
+##################################################
+
+### Get all categories
+GET {{baseUrl}}/categories
+
+
+### Get category by ID
+# Replace CATEGORY_ID with a real MongoDB ID
+GET {{baseUrl}}/categories/CATEGORY_ID
+
+
+### Create category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Food",
+  "description": "Food and grocery expenses"
+}
+
+
+### Create another category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Entertainment",
+  "description": "Movies, games, streaming, and other entertainment"
+}
+
+
+### Test category validation
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": ""
+}
+
+
+### Update category
+# Replace CATEGORY_ID with a real MongoDB ID
+PUT {{baseUrl}}/categories/CATEGORY_ID
+Content-Type: application/json
+
+{
+  "name": "Groceries",
+  "description": "Food and grocery shopping"
+}
+
+
+### Delete category
+# Replace CATEGORY_ID with a real MongoDB ID
+DELETE {{baseUrl}}/categories/CATEGORY_ID
+
+
+### Confirm category was deleted
+GET {{baseUrl}}/categories/CATEGORY_ID

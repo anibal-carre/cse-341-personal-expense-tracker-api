@@ -2,7 +2,12 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 
+const expensesRoutes = require('./routes/expenses.routes');
+const categoriesRoutes = require('./routes/categories.routes');
+
+const swaggerDocument = require('./swagger');
 
 const { connectDatabase } = require('./db/database');
 
@@ -12,6 +17,22 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/", (req, res) => {
+    res.status(200).json({
+        message: 'Expense Tracker API is running',
+        documentation: '/api-docs'
+    })
+})
+
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+);
+
+app.use('/expenses', expensesRoutes);
+app.use('/categories', categoriesRoutes);
 
 
 async function startServer() {
