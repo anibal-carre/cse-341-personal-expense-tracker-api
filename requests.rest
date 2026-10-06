@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3000
 
+
 ##################################################
 # ROOT
 ##################################################
@@ -8,11 +9,109 @@
 GET {{baseUrl}}/
 
 
+### Swagger Documentation
+GET {{baseUrl}}/api-docs
+
+
+##################################################
+# AUTHENTICATION
+##################################################
+
+### Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Anibal",
+  "email": "anibal@example.com",
+  "password": "Password123!"
+}
+
+
+### Register another user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "Password123!"
+}
+
+
+### Test registration validation
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "invalid-email",
+  "password": "123"
+}
+
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "anibal@example.com",
+  "password": "Password123!"
+}
+
+
+### Test login with wrong password
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "anibal@example.com",
+  "password": "WrongPassword123!"
+}
+
+
+### Test login validation
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": ""
+}
+
+
+### Get current authenticated user
+GET {{baseUrl}}/auth/me
+
+
+### GitHub OAuth login
+GET {{baseUrl}}/auth/github
+
+
+### Logout
+POST {{baseUrl}}/auth/logout
+
+
+##################################################
+# AUTHENTICATION TESTS
+##################################################
+
+### Try to access expenses without authentication
+# Run this AFTER logout
+GET {{baseUrl}}/expenses
+
+
+### Try to access categories without authentication
+# Run this AFTER logout
+GET {{baseUrl}}/categories
+
+
 ##################################################
 # EXPENSES
 ##################################################
 
 ### Get all expenses
+# Requires authentication
 GET {{baseUrl}}/expenses
 
 
@@ -29,7 +128,7 @@ Content-Type: application/json
   "description": "Supermarket",
   "amount": 125.50,
   "category": "Food",
-  "date": "2026-09-25",
+  "date": "2026-10-05",
   "paymentMethod": "Credit Card",
   "isRecurring": false,
   "notes": "Weekly groceries"
@@ -44,10 +143,55 @@ Content-Type: application/json
   "description": "Netflix",
   "amount": 15.99,
   "category": "Entertainment",
-  "date": "2026-09-20",
-  "paymentMethod": "Debit Card",
+  "date": "2026-10-01",
+  "paymentMethod": "Credit Card",
   "isRecurring": true,
   "notes": "Monthly subscription"
+}
+
+
+### Create transportation expense
+POST {{baseUrl}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Uber",
+  "amount": 32.40,
+  "category": "Transportation",
+  "date": "2026-09-30",
+  "paymentMethod": "Pix",
+  "isRecurring": false,
+  "notes": "Ride to university"
+}
+
+
+### Create bills expense
+POST {{baseUrl}}/expenses
+Content-Type: application/json
+
+{
+  "description": "Internet bill",
+  "amount": 99.90,
+  "category": "Bills",
+  "date": "2026-09-28",
+  "paymentMethod": "Debit Card",
+  "isRecurring": true,
+  "notes": "Monthly internet payment"
+}
+
+
+### Create shopping expense
+POST {{baseUrl}}/expenses
+Content-Type: application/json
+
+{
+  "description": "New shoes",
+  "amount": 220.00,
+  "category": "Shopping",
+  "date": "2026-09-25",
+  "paymentMethod": "Credit Card",
+  "isRecurring": false,
+  "notes": "Running shoes"
 }
 
 
@@ -75,7 +219,7 @@ Content-Type: application/json
   "description": "Supermarket Updated",
   "amount": 150.75,
   "category": "Food",
-  "date": "2026-09-25",
+  "date": "2026-10-05",
   "paymentMethod": "Credit Card",
   "isRecurring": false,
   "notes": "Updated grocery expense"
@@ -104,23 +248,53 @@ GET {{baseUrl}}/categories
 GET {{baseUrl}}/categories/CATEGORY_ID
 
 
-### Create category
+### Create Food category
 POST {{baseUrl}}/categories
 Content-Type: application/json
 
 {
   "name": "Food",
-  "description": "Food and grocery expenses"
+  "description": "Food, groceries, and restaurants"
 }
 
 
-### Create another category
+### Create Transportation category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Transportation",
+  "description": "Gas, public transportation, and rides"
+}
+
+
+### Create Entertainment category
 POST {{baseUrl}}/categories
 Content-Type: application/json
 
 {
   "name": "Entertainment",
-  "description": "Movies, games, streaming, and other entertainment"
+  "description": "Movies, games, streaming, and entertainment"
+}
+
+
+### Create Bills category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Bills",
+  "description": "Electricity, internet, phone, and other bills"
+}
+
+
+### Create Shopping category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Shopping",
+  "description": "Clothing, electronics, and other purchases"
 }
 
 

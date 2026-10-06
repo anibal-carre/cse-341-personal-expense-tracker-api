@@ -1,8 +1,12 @@
+const { ObjectId } = require('mongodb');
 const expensesModel = require('../models/expenses.model');
 
 async function getAllExpenses(req, res) {
     try {
-        const expenses = await expensesModel.getAllExpenses();
+        const expenses =
+            await expensesModel.getAllExpenses(
+                req.session.user.id
+            );
 
         return res.status(200).json(expenses);
     } catch (error) {
@@ -16,9 +20,11 @@ async function getAllExpenses(req, res) {
 
 async function getExpenseById(req, res) {
     try {
-        const expense = await expensesModel.getExpenseById(
-            req.params.id
-        );
+        const expense =
+            await expensesModel.getExpenseById(
+                req.params.id,
+                req.session.user.id
+            );
 
         if (!expense) {
             return res.status(404).json({
@@ -39,6 +45,7 @@ async function getExpenseById(req, res) {
 async function createExpense(req, res) {
     try {
         const expense = {
+            userId: new ObjectId(req.session.user.id),
             description: req.body.description.trim(),
             amount: req.body.amount,
             category: req.body.category.trim(),
@@ -48,7 +55,8 @@ async function createExpense(req, res) {
             notes: req.body.notes?.trim() || ''
         };
 
-        const id = await expensesModel.createExpense(expense);
+        const id =
+            await expensesModel.createExpense(expense);
 
         return res.status(201).json({
             message: 'Expense created successfully.',
@@ -75,10 +83,12 @@ async function updateExpense(req, res) {
             notes: req.body.notes?.trim() || ''
         };
 
-        const updated = await expensesModel.updateExpense(
-            req.params.id,
-            expense
-        );
+        const updated =
+            await expensesModel.updateExpense(
+                req.params.id,
+                req.session.user.id,
+                expense
+            );
 
         if (!updated) {
             return res.status(404).json({
@@ -98,9 +108,11 @@ async function updateExpense(req, res) {
 
 async function deleteExpense(req, res) {
     try {
-        const deleted = await expensesModel.deleteExpense(
-            req.params.id
-        );
+        const deleted =
+            await expensesModel.deleteExpense(
+                req.params.id,
+                req.session.user.id
+            );
 
         if (!deleted) {
             return res.status(404).json({

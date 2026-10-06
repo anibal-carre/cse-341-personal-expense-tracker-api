@@ -8,20 +8,23 @@ function getCollection() {
     return getDatabase().collection(collectionName);
 }
 
-async function getAllExpenses() {
+async function getAllExpenses(userId) {
     return await getCollection()
-        .find()
+        .find({
+            userId: new ObjectId(userId)
+        })
         .sort({ date: -1 })
         .toArray();
 }
 
-async function getExpenseById(id) {
+async function getExpenseById(id, userId) {
     if (!ObjectId.isValid(id)) {
         return null;
     }
 
     return await getCollection().findOne({
-        _id: new ObjectId(id)
+        _id: new ObjectId(id),
+        userId: new ObjectId(userId)
     });
 }
 
@@ -31,14 +34,15 @@ async function createExpense(expense) {
     return result.insertedId;
 }
 
-async function updateExpense(id, expense) {
+async function updateExpense(id, userId, expense) {
     if (!ObjectId.isValid(id)) {
         return false;
     }
 
     const result = await getCollection().updateOne(
         {
-            _id: new ObjectId(id)
+            _id: new ObjectId(id),
+            userId: new ObjectId(userId)
         },
         {
             $set: expense
@@ -48,13 +52,14 @@ async function updateExpense(id, expense) {
     return result.matchedCount > 0;
 }
 
-async function deleteExpense(id) {
+async function deleteExpense(id, userId) {
     if (!ObjectId.isValid(id)) {
         return false;
     }
 
     const result = await getCollection().deleteOne({
-        _id: new ObjectId(id)
+        _id: new ObjectId(id),
+        userId: new ObjectId(userId)
     });
 
     return result.deletedCount > 0;
